@@ -24,6 +24,12 @@ def encode_image_to_base64(image):
 # ✅ Vision API 호출
 def extract_text_with_openai(image):
     base64_image = encode_image_to_base64(image)
+    
+    prompt = (
+        "아래 이미지는 시험지의 일부로, 손글씨로 작성되어 있습니다. "
+        "이미지에 보이는 글자를 가능한 정확하게 줄바꿈 포함해서 모두 텍스트로 추출해줘. "
+        "의미 판단은 하지 말고 시각적으로 보이는 글자를 그대로 적어줘."
+    )
 
     response = client.chat.completions.create(
         model="gpt-4o",
@@ -31,7 +37,7 @@ def extract_text_with_openai(image):
             {
                 "role": "user",
                 "content": [
-                    {"type": "text", "text": "이 이미지에 포함된 텍스트를 가능한 정확하게 인식해줘. 줄바꿈도 포함해서 출력해줘."},
+                    {"type": "text", "text": prompt},
                     {"type": "image_url", "image_url": {
                         "url": f"data:image/png;base64,{base64_image}"
                     }}
