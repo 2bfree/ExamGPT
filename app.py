@@ -6,7 +6,7 @@ import openai
 import io
 
 # ✅ PaddleOCR 초기화
-ocr = PaddleOCR(use_angle_cls=True, lang='en')
+ocr = PaddleOCR(use_angle_cls=True, lang='ko')
 
 # ✅ OpenAI API 키 입력
 st.sidebar.title("🔐 OpenAI API Key")
