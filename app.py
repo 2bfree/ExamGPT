@@ -26,9 +26,7 @@ def extract_text_with_openai(image):
     base64_image = encode_image_to_base64(image)
     
     prompt = (
-        "이미지 안에 적힌 손글씨를 가능한 정확하게 줄바꿈 포함해서 텍스트로 추출해줘. "
-        "글의 의미를 해석하거나 판단하지 말고, 보이는 그대로 인식해서 써줘. "
-        "이건 채점 목적이 아니며, 단순히 시각적으로 보이는 글자를 추출하는 작업이다."
+        "학생이 쓴 답변을 텍스트로 추출하고. 평가해줘"
     )
 
     response = client.chat.completions.create(
@@ -44,7 +42,7 @@ def extract_text_with_openai(image):
                 ]
             }
         ],
-        max_tokens=1000
+        max_tokens=2000
     )
 
     return response.choices[0].message.content.strip()
