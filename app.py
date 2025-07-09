@@ -15,8 +15,10 @@ if not api_key:
 
 client = openai.OpenAI(api_key=api_key)
 
+prompt = "선생님들 업무를 쉽게 하고 싶어. 이미지에 있는 모든 내용들을 텍스트로 바꿔서 보여줘"
+
 # 📌 Vision API 요청 함수
-def extract_text_with_openai(image: Image.Image, prompt: str = "선생님들 업무를 쉽게 하고 싶어. 이미지에 있는 모든 내용들을 텍스트로 바꿔서 보여줘"):
+def extract_text_with_openai(image: Image.Image, prompt: str = prompt):
     buffered = io.BytesIO()
     image.save(buffered, format="PNG")
     base64_image = base64.b64encode(buffered.getvalue()).decode()
