@@ -15,14 +15,25 @@ if not api_key:
 
 client = openai.OpenAI(api_key=api_key)
 
-prompt = "선생님들 업무를 쉽게 하고 싶어. 이미지에 있는 모든 내용들을 텍스트로 바꿔서 보여줘. 만약 보여줄 수 없으면 자세한 사유를 알려줘"
+prompt = (
+    "선생님들 업무를 쉽게 하고 싶어. 이미지에 있는 모든 내용들을 텍스트로 바꿔서 보여줘. "
+    "만약 보여줄 수 없으면 자세한 사유를 알려줘"
+)
 
 # 📌 Vision API 요청 함수
+from PIL import ImageEnhance
+
 def extract_text_with_openai(image: Image.Image, prompt: str = prompt):
+    # 🔧 이미지 전처리 (해상도 및 대비 강화)
+    image = image.resize((int(image.width * 1.5), int(image.height * 1.5)))
+    image = image.convert("RGB")
+    image = ImageEnhance.Contrast(image).enhance(2.0)
+
     buffered = io.BytesIO()
-    image.save(buffered, format="PNG")
+    image.save(buffered, format="PNG", dpi=(300, 300))
     base64_image = base64.b64encode(buffered.getvalue()).decode()
 
+    # 🔍 OpenAI Vision 호출
     response = client.chat.completions.create(
         model="gpt-4o",
         messages=[
